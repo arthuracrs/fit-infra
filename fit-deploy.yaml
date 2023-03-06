@@ -30,6 +30,37 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: authbackend-deployment
+  namespace: fit-namespace
+spec:
+  selector:
+    matchLabels:
+      app: authbackend-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: authbackend-app
+    spec:
+      containers:
+        - name: authbackend-container
+          image: arthuracrs/fit-auth-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
+          env:
+          - name: API_PORT
+            value: "3001"
+          - name: TOKEN_KEY
+            value: "token123fom"
+          - name: MONGO_URI
+            value: "mongodb://root:example@mongodb-service:27017/auth?authSource=admin"
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: frontend-deployment
   namespace: fit-namespace
 spec:
@@ -61,6 +92,19 @@ spec:
   ports:
     - port: 80
       targetPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authbackend-service
+  namespace: fit-namespace
+spec:
+  selector: 
+    app: authbackend-app
+  ports:
+    - port: 80
+      targetPort: 3001
 
 ---
 apiVersion: v1
@@ -103,12 +147,3 @@ spec:
               name: frontend-service
               port:
                 number: 80
-  - http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: mongodb-service
-              port:
-                number: 27017

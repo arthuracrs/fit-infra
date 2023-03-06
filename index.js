@@ -31,7 +31,7 @@ function combineFiles(filePaths, outputFile) {
     });
   }
 
-const order = ["namespace", "backend-deployment", "frontend-deployment", "backend-service", "frontend-service", "ingress"]
+const order = ["namespace", "backend-deployment","authbackend-deployment", "frontend-deployment", "backend-service","authbackend-service", "frontend-service", "ingress"]
 const output = "fit-deploy.yaml"
 
 combineFiles(order, output)

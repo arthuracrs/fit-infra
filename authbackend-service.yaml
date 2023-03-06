@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authbackend-service
+  namespace: fit-namespace
+spec:
+  selector: 
+    app: authbackend-app
+  ports:
+    - port: 80
+      targetPort: 3001
