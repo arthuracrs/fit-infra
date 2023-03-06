@@ -103,3 +103,12 @@ spec:
               name: frontend-service
               port:
                 number: 80
+  - http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mongodb-service
+              port:
+                number: 27017
