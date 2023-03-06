@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fit-namespace
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: fit-namespace
+spec:
+  selector:
+    matchLabels:
+      app: backend-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+        - name: backend-container
+          image: arthuracrs/fit-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: fit-namespace
+spec:
+  selector:
+    matchLabels:
+      app: frontend-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      containers:
+        - name: frontend-container
+          image: arthuracrs/fit-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: fit-namespace
+spec:
+  selector: 
+    app: backend-app
+  ports:
+    - port: 80
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: fit-namespace
+spec:
+  selector: 
+    app: frontend-app
+  ports:
+    - port: 80
+      targetPort: 3001
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fit-ingress
+  namespace: fit-namespace
+spec:
+  rules:
+  - host: "api.fit.com"
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: backend-service
+              port:
+                number: 80
+  - host: "fit.com"
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend-service
+              port:
+                number: 80

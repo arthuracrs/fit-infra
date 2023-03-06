@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: fit-namespace
+spec:
+  selector:
+    matchLabels:
+      app: frontend-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      containers:
+        - name: frontend-container
+          image: arthuracrs/fit-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
