@@ -3,6 +3,33 @@ kind: Namespace
 metadata:
   name: mongo
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-data-pv
+  # namespace: fit-namespace
+  namespace: mongo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/mongo
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-data
+  # namespace: fit-namespace
+  namespace: mongo
+spec:
+  accessModes:
+    - ReadWriteOnce 
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,7 +56,13 @@ spec:
           value: admin
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: secret
-
+        volumeMounts:
+        - name: "mongo-data-dir"
+          mountPath: "/data/db"
+      volumes:
+      - name: "mongo-data-dir"
+        persistentVolumeClaim:
+          claimName: "mongo-data"
 ---
 apiVersion: v1
 kind: Service
