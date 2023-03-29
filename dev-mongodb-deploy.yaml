@@ -127,7 +127,7 @@ spec:
             - name: ME_CONFIG_MONGODB_ADMINPASSWORD
               value: secret
             - name: ME_CONFIG_MONGODB_URL
-              value: "mongodb://root:example@:27017/"
+              value: "mongodb://admin:secret@mongodb-service-int:27017/fit-dev?authSource=admin"
 ---
 apiVersion: v1
 kind: Service
