@@ -25,7 +25,7 @@ metadata:
   namespace: mongo
 spec:
   accessModes:
-    - ReadWriteOnce 
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -47,40 +47,103 @@ spec:
         app: mongodb
     spec:
       containers:
-      - name: mongodb
-        image: mongo:6
-        ports:
-        - containerPort: 27017
-        args: ["--dbpath","/data/db"]
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          value: admin
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          value: secret
-        - name: MONGODB_FEATURE_COMPABILITY_VERSION
-          value: 4.4
-        volumeMounts:
-        - name: "mongo-data-dir"
-          mountPath: "/data/db"
+        - name: mongodb
+          image: mongo:6
+          ports:
+            - containerPort: 27017
+          args: ["--dbpath", "/data/db"]
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: secret
+            - name: MONGODB_FEATURE_COMPABILITY_VERSION
+              value: "4.4"
+          volumeMounts:
+            - name: "mongo-data-dir"
+              mountPath: "/data/db"
       volumes:
-      - name: "mongo-data-dir"
-        persistentVolumeClaim:
-          claimName: "mongo-data"
+        - name: "mongo-data-dir"
+          persistentVolumeClaim:
+            claimName: "mongo-data"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-service
+  name: mongodb-service-ext
   # namespace: fit-namespace
   namespace: mongo
 spec:
   selector:
     app: mongodb
   ports:
-  - name: mongodb
-    protocol: TCP
-    port: 27017
-    targetPort: 27017
-    nodePort: 32000
+    - name: mongodb
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+      nodePort: 32000
   type: NodePort
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service-int
+  # namespace: fit-namespace
+  namespace: mongo
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - name: mongodb
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  # namespace: fit-namespace
+  namespace: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongo-express
+          image: mongo-express
+          ports:
+            - containerPort: 8081
+          env:
+            - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+              value: admin
+            - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+              value: secret
+            - name: ME_CONFIG_MONGODB_URL
+              value: "mongodb://root:example@:27017/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+  # namespace: fit-namespace
+  namespace: mongo
+spec:
+  selector:
+    app: mongo-express
+  ports:
+    - name: mongo-express
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 32001
+  type: NodePort
+---
+
