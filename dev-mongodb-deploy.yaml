@@ -103,7 +103,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-deployment
+  name: mongodb-express-deployment
   # namespace: fit-namespace
   namespace: mongo
 spec:
