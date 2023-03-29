@@ -8,6 +8,7 @@ kind: Deployment
 metadata:
   name: mongodb-deployment
   # namespace: fit-namespace
+  namespace: mongo
 spec:
   replicas: 1
   selector:
@@ -35,6 +36,7 @@ kind: Service
 metadata:
   name: mongodb-service
   # namespace: fit-namespace
+  namespace: mongo
 spec:
   selector:
     app: mongodb
