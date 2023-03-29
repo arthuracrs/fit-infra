@@ -87,7 +87,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-service-int
+  name: mongodbserviceint
   # namespace: fit-namespace
   namespace: mongo
 spec:
@@ -127,7 +127,7 @@ spec:
             - name: ME_CONFIG_MONGODB_ADMINPASSWORD
               value: secret
             - name: ME_CONFIG_MONGODB_URL
-              value: "mongodb://admin:secret@mongodb-service-int:27017/fit-dev?authSource=admin"
+              value: "mongodb://admin:secret@mongodbserviceint:27017/fit-dev?authSource=admin"
 ---
 apiVersion: v1
 kind: Service
