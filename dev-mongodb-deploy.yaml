@@ -132,6 +132,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongo-express-service
+  # namespace: fit-namespace
+  namespace: mongo
 spec:
   selector:
     app: mongodb-express
