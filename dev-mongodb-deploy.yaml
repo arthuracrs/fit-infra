@@ -128,21 +128,32 @@ spec:
             - name: ME_CONFIG_MONGODB_URL
               value: mongodb://admin:secret@mongodbserviceint:27017/fit-dev?authSource=admin
 ---
-apiVersion: v1
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mongo-express-service
+#   # namespace: fit-namespace
+#   namespace: mongo
+# spec:
+#   selector:
+#     app: mongo-express
+#   ports:
+#     - name: mongo-express
+#       protocol: TCP
+#       port: 8081
+#       targetPort: 8081
+#       nodePort: 32001
+#   type: NodePort
+---
 kind: Service
 metadata:
   name: mongo-express-service
-  # namespace: fit-namespace
-  namespace: mongo
 spec:
   selector:
-    app: mongo-express
+    app: mongodb-express
+  type: LoadBalancer
   ports:
-    - name: mongo-express
-      protocol: TCP
+    - protocol: TCP
       port: 8081
       targetPort: 8081
-      nodePort: 32001
-  type: NodePort
----
 
