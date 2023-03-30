@@ -109,11 +109,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: mongodb-express
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongodb-express
     spec:
       containers:
         - name: mongo-express
