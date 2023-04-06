@@ -101,8 +101,6 @@ spec:
       labels:
         app: mongodb-express
     spec:
-      dependencies:
-      - name: mongodb-deployment
       containers:
         - name: mongodb-express
           image: mongo-express
@@ -170,8 +168,6 @@ spec:
       labels:
         app: authbackend-app
     spec:
-      dependencies:
-      - name: mongodb-deployment
       containers:
         - name: authbackend-container
           image: arthuracrs/fit-auth-service:1.0.0

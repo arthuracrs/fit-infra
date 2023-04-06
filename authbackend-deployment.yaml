@@ -13,8 +13,6 @@ spec:
       labels:
         app: authbackend-app
     spec:
-      dependencies:
-      - name: mongodb-deployment
       containers:
         - name: authbackend-container
           image: arthuracrs/fit-auth-service:1.0.0
