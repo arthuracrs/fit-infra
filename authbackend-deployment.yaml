@@ -25,5 +25,5 @@ spec:
           - name: TOKEN_KEY
             value: "token123fom"
           - name: MONGO_URI
-            value: "mongodb://admin:secret@mongodb-service:27017/admin?authSource=admin"
+            value: "mongodb://admin:secret@mongodb-service:27017/fit-dev?authSource=admin"
 
