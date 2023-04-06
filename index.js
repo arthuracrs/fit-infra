@@ -32,8 +32,8 @@ function combineFiles(filePaths, outputFile) {
 }
 
 const order = [
-  "dev-mongodb-deploy",
   "namespace",
+  "dev-mongodb-deploy",
   "backend-deployment",
   "authbackend-deployment",
   "frontend-deployment",
