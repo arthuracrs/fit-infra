@@ -25,3 +25,13 @@ spec:
               name: frontend-service
               port:
                 number: 80
+  - host: "auth.fit.com"
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: authbackend-service
+              port:
+                number: 80
