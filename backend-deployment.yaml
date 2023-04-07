@@ -15,10 +15,12 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: arthuracrs/fit-backend:1.0.0
+          image: arthuracrs/fit-backend:1.0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           env:
           - name: AUTH_SERVICE_URL
             value: "http:authbackend-service"
+          - name: MONGO_URL
+            value: "MONGO_URL=mongodb://root:example@mongodb-service:27017/fit-dev?authSource=admin"
