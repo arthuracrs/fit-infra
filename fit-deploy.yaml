@@ -155,7 +155,7 @@ spec:
           - name: AUTH_SERVICE_URL
             value: "http:authbackend-service"
           - name: MONGO_URL
-            value: "mongodb://root:example@mongodb-service:27017/fit-dev?authSource=admin"
+            value: mongodb://admin:secret@mongodb-service:27017/fit-dev?authSource=admin
 
 ---
 apiVersion: apps/v1
